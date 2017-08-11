@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Cnl-Lp-zuV">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Image View Controller-->
+        <scene sceneID="3uD-C6-OgR">
+            <objects>
+                <viewController id="Cnl-Lp-zuV" customClass="ImageViewController" customModule="myCassini193" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QDc-BG-V9T"/>
+                        <viewControllerLayoutGuide type="bottom" id="nUz-5l-77u"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7GP-xX-axr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzJ-nJ-HUG">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kzJ-nJ-HUG" firstAttribute="leading" secondItem="7GP-xX-axr" secondAttribute="leading" id="1kY-uw-3Yl"/>
+                            <constraint firstItem="kzJ-nJ-HUG" firstAttribute="top" secondItem="7GP-xX-axr" secondAttribute="top" id="AEG-V2-O4r"/>
+                            <constraint firstAttribute="trailing" secondItem="kzJ-nJ-HUG" secondAttribute="trailing" id="BXf-mE-Y4D"/>
+                            <constraint firstItem="kzJ-nJ-HUG" firstAttribute="bottom" secondItem="nUz-5l-77u" secondAttribute="top" id="irD-GA-hng"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="kzJ-nJ-HUG" id="I4E-By-PRj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TwK-ja-MOa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245.59999999999999" y="-246.02698650674665"/>
+        </scene>
+    </scenes>
+</document>
