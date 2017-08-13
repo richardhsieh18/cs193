@@ -23,6 +23,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
         didSet{
             searchTextField.text = searchText
             searchTextField.resignFirstResponder()
+            lastTwitterRequest = nil
             tweets.removeAll()
             tableView.reloadData()
             searchForTweets()
@@ -30,10 +31,16 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
         }
     }
     
+    func insertTweets(_ newTweets: [Twitter.Tweet])
+    {
+        self.tweets.insert(newTweets, at: 0)
+        self.tableView.insertSections([0], with: .fade)
+    }
+    
     private func twitterRequest() -> Twitter.Request?
     {
         if let query = searchText, !query.isEmpty {
-            return Twitter.Request(search: query, count: 100)
+            return Twitter.Request(search: "\(query) -filter:safe -filter:retweets", count: 100)
         }
         return nil
     }
@@ -42,18 +49,27 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
     
     private func searchForTweets()
     {
-        if let request = twitterRequest(){
+        if let request = lastTwitterRequest?.newer ?? twitterRequest() {
             lastTwitterRequest = request
-            request.fetchTweets({ [weak self] (newTweets) in
+            request.fetchTweets{ [weak self] (newTweets) in
                 DispatchQueue.main.async {
                     if request == self?.lastTwitterRequest {
-                        self?.tweets.insert(newTweets, at: 0)
-                        //如果有新資料，伴隨動畫插入新Section
-                        self?.tableView.insertSections([0], with: .fade)
+                            self?.insertTweets(newTweets)
+                        //將該功能拉成一個func
+//                        self?.tweets.insert(newTweets, at: 0)
+//                        //如果有新資料，伴隨動畫插入新Section
+//                        self?.tableView.insertSections([0], with: .fade)
                     }
+                    self?.refreshControl?.endRefreshing()
                 }
-            })
+            }
+        }else{
+            self.refreshControl?.endRefreshing()
         }
+    }
+    //Refresh元件
+    @IBAction func refrech(_ sender: UIRefreshControl) {
+        searchForTweets()
     }
     
     override func viewDidLoad() {
@@ -69,6 +85,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
             searchTextField.delegate = self
         }
     }
+
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == searchTextField {
@@ -94,7 +111,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Tweet", for: indexPath)
 
-        let tweet : Tweet = tweets[indexPath.section][indexPath.row]
+        let tweet : Twitter.Tweet = tweets[indexPath.section][indexPath.row]
 //        cell.textLabel?.text = tweet.text
 //        cell.detailTextLabel?.text = tweet.user.name
         if let tweetCell = cell as? TweetTableViewCell {
@@ -103,6 +120,9 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
         
 
         return cell
+    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "\(tweets.count - section)"
     }
 
 
