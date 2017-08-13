@@ -23,7 +23,20 @@ class SmashTweetersTableViewController: FetchResultsTableViewController
     var fetchedResultsController: NSFetchedResultsController<TwitterUser>?
     
     private func updateUI(){
-
+        if let context = container?.viewContext {
+            let request: NSFetchRequest<TwitterUser> = TwitterUser.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(key: "handle", ascending: true)]
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@", mention!)
+                    fetchedResultsController = NSFetchedResultsController<TwitterUser>(
+                        fetchRequest: request,
+                        managedObjectContext: context,
+                        sectionNameKeyPath: nil,
+                        cacheName: nil
+            )
+            fetchedResultsController?.delegate = self
+            try? fetchedResultsController?.performFetch()
+            tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
