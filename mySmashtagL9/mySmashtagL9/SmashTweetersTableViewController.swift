@@ -25,7 +25,7 @@ class SmashTweetersTableViewController: FetchResultsTableViewController
     private func updateUI(){
         if let context = container?.viewContext {
             let request: NSFetchRequest<TwitterUser> = TwitterUser.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(key: "handle", ascending: true)]
+            request.sortDescriptors = [NSSortDescriptor(key: "handle", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
             request.predicate = NSPredicate(format: "any tweets.text contains[c] %@", mention!)
                     fetchedResultsController = NSFetchedResultsController<TwitterUser>(
                         fetchRequest: request,
@@ -43,7 +43,15 @@ class SmashTweetersTableViewController: FetchResultsTableViewController
         let cell = tableView.dequeueReusableCell(withIdentifier: "TwitterUser Cell", for: indexPath)
             if let twitterUser = fetchedResultsController?.object(at: indexPath){
             cell.textLabel?.text = twitterUser.handle
+                let tweetCount = tweetCountWithMentionBy(twitterUser)
+                cell.detailTextLabel?.text = "\(tweetCount) tweet\((tweetCount == 1) ? "" : "s")"
             }
             return cell
         }
+    
+    private func tweetCountWithMentionBy(_ twitterUser: TwitterUser) -> Int {
+        let request: NSFetchRequest<Tweet> = Tweet.fetchRequest()
+        request.predicate = NSPredicate(format: "text contains[c] %@ and tweeter = %@", mention!, twitterUser)
+        return (try? twitterUser.managedObjectContext!.count(for: request)) ?? 0
+    }
 }

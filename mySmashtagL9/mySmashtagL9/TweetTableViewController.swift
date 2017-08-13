@@ -54,7 +54,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate
             request.fetchTweets{ [weak self] (newTweets) in
                 DispatchQueue.main.async {
                     if request == self?.lastTwitterRequest {
-                            self?.insertTweets(newTweets)
+                        self?.insertTweets(newTweets)
                         //將該功能拉成一個func
 //                        self?.tweets.insert(newTweets, at: 0)
 //                        //如果有新資料，伴隨動畫插入新Section
