@@ -67,9 +67,39 @@ class ExpressionEditorViewController: UITableViewController,UITextFieldDelegate 
                     navigationItem.leftBarButtonItem = nil
             }
         }
+        //1:11:00這段很重要，autoLayout
+        var size = tableView.minimumSize(forSection: 0)
+        size.height -= tableView.heightForRow(at: IndexPath(row: 1, section: 0))
+        size.height += size.width
+        preferredContentSize = size
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         presentingViewController?.dismiss(animated: true)
+    }
+}
+//1:11:00 AutoLayout
+extension UITableView {
+    func minimumSize(forSection section: Int) -> CGSize {
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+        for row in 0..<numberOfRows(inSection: section){
+            let indexPath = IndexPath(row: row, section: section)
+            if let cell = cellForRow(at: indexPath) ?? dataSource?.tableView(self, cellForRowAt: indexPath){
+                //重點在這 1:15:14
+                let cellSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+                width = max(width, cellSize.width)
+                height += heightForRow(at: indexPath)
+            }
+        }
+        return CGSize(width: width, height: height)
+    }
+    
+    func heightForRow(at indexPath: IndexPath? = nil) -> CGFloat{
+        if indexPath != nil, let height = delegate?.tableView?(self, heightForRowAt: indexPath!){
+            return height
+        }else{
+            return rowHeight
+        }
     }
 }
