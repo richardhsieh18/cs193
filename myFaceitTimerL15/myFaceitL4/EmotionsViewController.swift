@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmotionsViewController: UITableViewController
+class EmotionsViewController: UITableViewController,UIPopoverPresentationControllerDelegate
 {
     
 
@@ -33,8 +33,22 @@ class EmotionsViewController: UITableViewController
                     //幫detailVC加上Title，使用sender的currentTitle
                     faceViewController.navigationItem.title = emotionalFaces[indexPath.row].name
                     //faceViewController.navigationItem.title = identifier //這樣也可以阿++自己想的
-                }
-
+        }else if destinationViewController is ExpressionEditorViewController {
+            if let popoverPresentationController = segue.destination.popoverPresentationController {
+                 popoverPresentationController.delegate = self
+            }
+        }
+    }
+    
+    //Last
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if traitCollection.verticalSizeClass == .compact {
+            return .none
+        }else if traitCollection.horizontalSizeClass == .compact {
+            return .overFullScreen
+        }else{
+            return .none
+        }
     }
     
     //MARK: UITableviewDataSource
