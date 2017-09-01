@@ -61,5 +61,13 @@ class EmotionsViewController: UITableViewController
         ("happy", FacialExpression(eyes: .open, mouth: .smile)),
         ("worried", FacialExpression(eyes: .open, mouth: .smirk))
     ]
+    
+    
+    @IBAction func addEmotionalFace(from segue: UIStoryboardSegue){
+        if let editor = segue.source as? ExpressionEditorViewController {
+            emotionalFaces.append((editor.name, editor.expression))
+            tableView.reloadData()
+        }
+    }
 
 }

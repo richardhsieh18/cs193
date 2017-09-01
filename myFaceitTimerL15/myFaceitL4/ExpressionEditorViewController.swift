@@ -25,7 +25,7 @@ class ExpressionEditorViewController: UITableViewController,UITextFieldDelegate 
     }
     
     @IBAction func updateFace() {
-        print("\(name)  =   \(expression)")
+        faceViewController?.expression = expression
     }
     
     
@@ -46,6 +46,27 @@ class ExpressionEditorViewController: UITableViewController,UITextFieldDelegate 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+    //Prepare
+    private var faceViewController: BlinkingFaceViewController?
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Embed Face" {
+            faceViewController = segue.destination as? BlinkingFaceViewController
+            faceViewController?.expression = expression
+        }
+    }
+    
+    //1:13
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //如果popover是在navation下的popover，如果知道方向則cancel 按鈕消失
+        if let popoverPresentationController = navigationController?.popoverPresentationController{
+            if popoverPresentationController.arrowDirection != .unknown {
+                    navigationItem.leftBarButtonItem = nil
+            }
+        }
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {

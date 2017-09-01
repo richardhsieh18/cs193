@@ -106,7 +106,9 @@
                     <navigationItem key="navigationItem" title="情緒" id="QOl-Wa-cY8">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="h7x-1b-XqG">
                             <connections>
-                                <segue destination="v6K-pK-Las" kind="presentation" id="lTB-TI-scB"/>
+                                <segue destination="v6K-pK-Las" kind="popoverPresentation" popoverAnchorBarButtonItem="h7x-1b-XqG" id="lTB-TI-scB">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -153,19 +155,21 @@
                                         <rect key="frame" x="0.0" y="44" width="414" height="161"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vng-wb-LXN" id="XL0-u4-utl">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="160.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="161"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YOU-gW-9u2" customClass="FaceView" customModule="myFaceitL4" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="0.0" width="398" height="152.66666666666666"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </view>
+                                                <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWV-it-i1H">
+                                                    <rect key="frame" x="0.0" y="1" width="414" height="161"/>
+                                                    <connections>
+                                                        <segue destination="XeR-eR-kr1" kind="embed" identifier="Embed Face" id="kIr-00-46I"/>
+                                                    </connections>
+                                                </containerView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="YOU-gW-9u2" firstAttribute="trailing" secondItem="XL0-u4-utl" secondAttribute="trailingMargin" id="BjF-9h-t1y"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="YOU-gW-9u2" secondAttribute="bottom" id="IgN-i1-Mgx"/>
-                                                <constraint firstItem="YOU-gW-9u2" firstAttribute="top" secondItem="XL0-u4-utl" secondAttribute="top" id="rEH-ft-Ptz"/>
-                                                <constraint firstItem="YOU-gW-9u2" firstAttribute="leading" secondItem="XL0-u4-utl" secondAttribute="leadingMargin" id="vjg-kb-oRY"/>
+                                                <constraint firstItem="cWV-it-i1H" firstAttribute="top" secondItem="XL0-u4-utl" secondAttribute="topMargin" constant="-7" id="0hq-vU-hN8"/>
+                                                <constraint firstAttribute="trailing" secondItem="cWV-it-i1H" secondAttribute="trailing" id="Oo1-dq-esd"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="cWV-it-i1H" secondAttribute="bottom" constant="-9.3333333333333428" id="QzS-MC-ccp"/>
+                                                <constraint firstItem="cWV-it-i1H" firstAttribute="leading" secondItem="XL0-u4-utl" secondAttribute="leading" id="RxB-tP-ODF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -239,6 +243,11 @@
                                 <action selector="cancel:" destination="68b-aT-Jjh" id="QIE-gX-ogU"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="s88-29-6Dd">
+                            <connections>
+                                <segue destination="nlW-ME-qlR" kind="unwind" identifier="Add Emotion" unwindAction="addEmotionalFaceFrom:" id="b5l-4m-rAY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="eyeControl" destination="eyl-9z-jqs" id="DP0-Ef-yvr"/>
@@ -247,6 +256,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAj-49-4Dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="nlW-ME-qlR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2571.0144927536235" y="-99.456521739130437"/>
         </scene>
@@ -316,6 +326,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7GP-8h-Ayv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1663.7681159420292" y="-99.456521739130437"/>
+        </scene>
+        <!--Blinking Face View Controller-->
+        <scene sceneID="Fxo-aU-mDf">
+            <objects>
+                <viewController id="XeR-eR-kr1" customClass="BlinkingFaceViewController" customModule="myFaceitL4" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dv5-Na-c3G">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="161"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="H2d-EV-sLy" customClass="FaceView" customModule="myFaceitL4" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="161"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="mouthCurvature">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="scale">
+                                        <real key="value" value="0.90000000000000002"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="eyeOpen" value="NO"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="H2d-EV-sLy" firstAttribute="leading" secondItem="dv5-Na-c3G" secondAttribute="leading" id="5Ny-ju-LVJ"/>
+                            <constraint firstAttribute="bottom" secondItem="H2d-EV-sLy" secondAttribute="bottom" id="BYD-4v-im8"/>
+                            <constraint firstItem="H2d-EV-sLy" firstAttribute="top" secondItem="dv5-Na-c3G" secondAttribute="top" id="PiD-cv-5rd"/>
+                            <constraint firstAttribute="trailing" secondItem="H2d-EV-sLy" secondAttribute="trailing" id="wS5-eP-y0F"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="faceView" destination="H2d-EV-sLy" id="2UP-go-HBW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Os2-OU-NEG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3292.753623188406" y="-332.20108695652175"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
